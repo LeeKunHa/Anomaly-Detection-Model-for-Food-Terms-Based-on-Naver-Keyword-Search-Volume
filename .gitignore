@@ -1,9 +1,7 @@
 #cache
-/.ipynb_checkpoints/
-
-/__pycache__/
-
+.ipynb_checkpoints/
+__pycache__/
 
 # security file
-/data/keyword_noun/
+data/keyword_noun/
 
