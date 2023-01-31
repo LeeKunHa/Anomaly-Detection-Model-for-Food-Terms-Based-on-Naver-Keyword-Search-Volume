@@ -4,4 +4,4 @@ __pycache__/
 
 # security file
 data/
-
+config.py
