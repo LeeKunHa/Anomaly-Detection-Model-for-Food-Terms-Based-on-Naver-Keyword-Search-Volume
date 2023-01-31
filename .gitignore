@@ -1,1 +1,8 @@
+#cache
+.ipynb_chechpoints/
+__pycache__/
+
+
+# security file
 data/keyword_noun/
+
