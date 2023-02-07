@@ -6,17 +6,9 @@ import plotly.express as px
 import seaborn as sns
 import urllib.request
 import json
-import glob
-import sys
-import os
-import hashlib
-import hmac
-import base64
 import random
 from tqdm.notebook import tqdm
 from datetime import datetime
-from pandas.io.json import json_normalize
-from prophet import Prophet
 from dateutil.relativedelta import *
 #자체 파일
 from config import *
@@ -37,12 +29,6 @@ class Parameter(): #수정시 다른 코드가 아닌 이 클래스만 수정하
         self.num = random.randrange(len(_cfg['NAVER_TREND'].items())/2) #생성한 api 수 만큼 설정
         self.client_id = _cfg['NAVER_TREND'][f'client_id{self.num}']
         self.client_secret = _cfg['NAVER_TREND'][f'client_secret{self.num}']
-    # 광고API 인증정보
-    BASE_URL = _cfg['NAVER_AD']['BASE_URL']
-    API_KEY = _cfg['NAVER_AD']['API_KEY']
-    SECRET_KEY = _cfg['NAVER_AD']['SECRET_KEY']
-    CUSTOMER_ID = _cfg['NAVER_AD']['CUSTOMER_ID']
-    
     # 요청 파라미터 설정
     """
     요청 결과 반환
@@ -310,13 +296,8 @@ def find_unmax_key(keyword):
 #total_max_key를 기준(100)으로 전체 검색어에 대한 상대적 검색량 값 최종 산출
 def search_amount(keyword,total_max_key,single_list):
     keyword = [x for x in keyword if x not in single_list] #single_list 검색어는 제외. 추후 실제값으로 합칠 예정
-    keyword = [x.replace(' ','') for x in keyword]
-    # 리스트에 중복값 있을 경우 삭제 (시간복잡도가 늘어나더라도 순서가 바뀌지 않도록 for문 사용)
-    keyword_unique = []
-    for v in keyword:
-        if v not in keyword_unique:
-            keyword_unique.append(v)
-    keyword = keyword_unique.copy()
+    # 리스트 원래 순서 저장
+    keyword_raw = keyword.copy()
 
     # find_max_key를 맨 앞으로 (나중에 완성되면 total_max_key를 max_key(keyword) 로)
     keyword.remove(total_max_key)
@@ -368,6 +349,6 @@ def search_amount(keyword,total_max_key,single_list):
         #df.drop(df[df.columns[pd.Series(df.columns).str.startswith('임시')]], axis=1)
     
     #원래 리스트 순서대로 정렬
-    keyword_unique.insert(0, '날짜')
-    df = df_total[keyword_unique]
+    keyword_raw.insert(0, '날짜')
+    df = df_total[keyword_raw]
     return df
