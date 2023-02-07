@@ -1,3 +1,5 @@
+import csv
+
 from config import *
 _cfg = config
 
@@ -24,3 +26,33 @@ if __name__ == "__main__":
     keyword_unique = []
     [keyword_unique.append(x) for x in keyword_list if x not in keyword_unique].clear() #None 반복 출력을 막기 위한 clear
     keyword_list = [x.replace(' ','') for x in keyword_list] #공백제거(한달치 검색량에 안 잡힘)
+
+
+    # 최대값을 갖는 검색어 찾기
+    total_max_key, single_list, error_list = find_max_key(keyword_list)
+    error_list = sum(error_list, [])
+    total_max_key, single_list, final_error = find_error_list(error_list, total_max_key, single_list)
+    keyword_list = [x for x in keyword_list if x not in final_error]
+    
+    
+    # keyword_list 저장(final_error는 제외, single_list는 포함)
+    with open('data/input_keyword/total_keyword.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(keyword_list)
+
+    # 불러오기(# keyword_list를 바꾸지 않았으면 여기부터!!)
+    keyword_list = []
+    with open('data/input_keyword/total_keyword.csv','r',newline='') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            keyword_list.append(row)
+    keyword_list = sum(keyword_list, [])
+
+    single_list = find_unmax_key(single_list)
+    df = search_amount(keyword_list,total_max_key,single_list)
+    #검색량 상대값 저장
+    date = str(datetime.now().date().strftime('%Y%m%d'))
+    df.to_csv(f'data/result/search_result{date}.csv', index=False)
+    df = pd.read_csv(f'data/result/search_result{date}.csv')
+    df['날짜'] = df['날짜'].astype('datetime64[ns]')
+
