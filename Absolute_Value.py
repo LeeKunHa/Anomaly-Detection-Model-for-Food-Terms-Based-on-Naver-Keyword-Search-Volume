@@ -1,14 +1,8 @@
 #라이브러리
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import plotly.express as px
-import seaborn as sns
 import random
-from tqdm.notebook import tqdm
 from datetime import datetime
-from pandas.io.json import json_normalize
-from prophet import Prophet
 from dateutil.relativedelta import *
 from powernad.API.Campaign import *
 from powernad.API.RelKwdStat import *

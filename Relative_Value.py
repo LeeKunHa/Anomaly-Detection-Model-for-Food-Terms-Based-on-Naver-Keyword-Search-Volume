@@ -1,13 +1,8 @@
 #라이브러리
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import plotly.express as px
-import seaborn as sns
 import urllib.request
 import json
 import random
-from tqdm.notebook import tqdm
 from datetime import datetime
 from dateutil.relativedelta import *
 #자체 파일
@@ -168,7 +163,7 @@ def find_max_key(keyword_): #input 형태는 반드시 리스트
     df_total = df.copy()
 
     # 검색어 리스트 값을 키워드로 지정
-    for i in tqdm(range(1, len(keyword)-3, 4)):
+    for i in range(1, len(keyword)-3, 4):
         key1 = keyword[i]
         key2 = keyword[i+1]
         key3 = keyword[i+2]
@@ -316,7 +311,7 @@ def search_amount(keyword,total_max_key,single_list):
 
 
     # 검색어 리스트 값을 키워드로 지정
-    for i in tqdm(range(1, len(keyword)-3, 4)):
+    for i in range(1, len(keyword)-3, 4):
         key1 = keyword[i]
         key2 = keyword[i+1]
         key3 = keyword[i+2]
