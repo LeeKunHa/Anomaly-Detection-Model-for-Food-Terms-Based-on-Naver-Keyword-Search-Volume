@@ -83,7 +83,7 @@ def real_amount(keyword,df,total_max_key,single_list):
     final_df = pd.concat([df['날짜'], result], axis=1)
 
     #성능평가(오차율, MSE). 오차를 측정할 경우 일일 호출량이 더 사용된다.
-    print("5개의 샘플을 추출하여 오차율과 MSE를 계산 중 입니다...")
+    #print("5개의 샘플을 추출하여 오차율과 MSE를 계산 중 입니다...")
     error_per_list = []
     MSE_list =[]
     for i in calculator_dict.items():
@@ -98,9 +98,8 @@ def real_amount(keyword,df,total_max_key,single_list):
         
     #오차율 기준(10%)을 넘는 샘플이 있으면 다시 샘플 추출
     if (len(keyword) >= 50) and (sorted(error_per_list, reverse=True)[0] >= 10): #리스트 내 검색어 수가 50개가 넘을 시에만 실행
-        #print('오차율 10% 넘는 샘플이 발견되어 샘플을 다시 추출합니다..')
-        real_amount(keyword) #재귀함수
-
+        print('오차율 10% 넘는 샘플이 발견되어 샘플을 다시 추출합니다..')
+        real_amount(keyword,df,total_max_key,single_list) #재귀함수
     #결측값이 있으면서 total_max_key보다 큰 값은 따로 concat (이상치여도 어쩔 수 없음)
     if len(single_list) > 0:
         for i in single_list:
