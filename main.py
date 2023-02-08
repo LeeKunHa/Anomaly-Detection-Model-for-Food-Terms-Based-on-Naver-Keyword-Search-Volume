@@ -108,4 +108,7 @@ def main(search_, start_date, end_date, recursive='No'): #재귀로 사용되는
 
 # main 안에 인자는 '검색어', '시작일', '종료일'
 if __name__ == "__main__":
-    all_news_df, naver_news_df = main('식품안전나라', '20220101', '20221231')
+    search_keyword = input(f'검색어를 입력하세요: ')
+    start_date = input(f'시작일자를 입력하세요: ')
+    end_date = input(f'종료일자를 입력하세요: ')
+    all_news_df, naver_news_df = main(search_keyword, start_date, end_date)
