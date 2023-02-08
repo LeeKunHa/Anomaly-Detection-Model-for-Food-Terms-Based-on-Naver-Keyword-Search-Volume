@@ -133,7 +133,8 @@ def max_key(data):
                 return i
 
 # 기준열인 100값 찾기 (오류가 발생한다면, 모든 값에 대해 검색값을 갖는 검색어가 없다는 의미)
-def find_max_key(keyword): #input 형태는 반드시 리스트
+def find_max_key(keyword_): #input 형태는 반드시 리스트
+    keyword = keyword_.copy()
     #검색결과가 너무 적은 경우는 오류처리 하는 것으로 보임
     error_list = []
     #결측치가 있는 경우 다른 검색어에 대해서도 결측값이 생기는 점 확인. 이를 대비하기 위한 결측치 리스트 생성
@@ -245,7 +246,7 @@ def find_error_list(error_list, total_max_key, single_list):
 #결측치 있던 max_key()후보와 total_max_key를 다시 비교해서 최종 total_max_key보다 작은 값은 포함
 def find_unmax_key(keyword):
     if len(keyword) == 0:
-        print("모든 검색어가 이미 포함되었습니다.")
+        #print("모든 검색어가 이미 포함되었습니다.")
         return []
     
     elif len(keyword) > 0:
@@ -289,7 +290,7 @@ def find_unmax_key(keyword):
                     df_ = df.iloc[:,1:]
                     if df_[keyword[0]].max() < df_[i].max():
                            single_list.append(i)
-        print('정상적으로 처리되었습니다.')                  
+        #print('정상적으로 처리되었습니다.')                  
         return single_list #single_list는 결측값이 있는 검색어 중 total_max_key(결측값이 없는 검색어 중 최대값을 갖는 검색어) 최대값일 가능성이 있는 단어
 
 
