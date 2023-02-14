@@ -2,14 +2,28 @@
 import pandas as pd
 # 자체 파일
 from Anomaly_Detection import *
+from Kakao_send_me import *
 
 df = pd.read_csv('../Naver_Search_Amount/data/result/search_result_absolute20230213.csv', encoding='cp949')
 df['날짜'] = df['날짜'].astype('datetime64[ns]')
 # 시계열 그래프 작성을 위해 값이 2개 최소 이상인 검색어만 추출
 df_ = df[df.columns[df.isnull().sum() < len(df)-1]]
-df_ = df_.iloc[:,:20] # 필요시 개수 제한
+#df_ = df_.iloc[:,:20] # 필요시 개수 제한
 df_anomaly = Anomaly_Detect(df_)
 df_anomaly.to_csv('data/Anomaly_result.csv', encoding='cp949', index=False)
 df_anomaly_yes, df_anomaly_low = Extract_date(df_anomaly,df_)
 df = key_keyword(df_anomaly_yes)
-df.to_csv('data/anomaly_keyword.csv', encoding='cp949', index=False, header=False)
+df.to_csv('data/anomaly_keyword.csv', encoding='cp949', index=False)
+df = key_date(df_anomaly_yes)
+df.to_csv('data/anomaly_date.csv', encoding='cp949', index=False)
+
+# 어제의 이상검색어가 있을 경우 카카오톡으로 알림
+df_anomaly_ = key_date(df_anomaly_yes)
+yesterday = str(datetime.now().date() - relativedelta(days=1))
+if df_anomaly_['날짜'].iloc[-1] == yesterday:
+    anomaly_yesterday = df_anomaly_[df_anomaly_['날짜'] == yesterday]['검색어'].values[0] #어제 이상치..
+    message = f'{df_anomaly_.날짜.iloc[-1]} 이상검색어 목록입니다. \n{anomaly_yesterday}'
+else:
+    message = f'{df_anomaly_.날짜.iloc[-1]} 이후 발견된 이상 검색어가 없습니다.'
+kakao_send_text(message)
+    
