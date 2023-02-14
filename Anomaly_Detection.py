@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 from tqdm.notebook import tqdm
 from prophet import Prophet
-from dateutil.relativedelta import *
+from dateutil.relativedelta import relativedelta
 
 def Anomaly_Detect(df):
     final_df = df.copy()
@@ -61,7 +61,7 @@ def Extract_date(df_anomaly,df_raw):
 
 
 def key_keyword(df_anomaly_yes):
-    # 검색어가 key
+    # 검색어별로 보기
     df_anomaly_dict = {}
     for i in range(len(df_anomaly_yes.columns)):
         temp_list = []
@@ -70,4 +70,18 @@ def key_keyword(df_anomaly_yes):
                 temp_list.append(df_anomaly_yes.index[j])
                 #print(df_anomaly_yes.index[i],df_anomaly_yes.columns[j])
             df_anomaly_dict[df_anomaly_yes.columns[i]] = temp_list
-    return pd.DataFrame(df_anomaly_dict.items())
+    return pd.DataFrame(df_anomaly_dict.items(), columns=['검색어','날짜'])
+
+
+def key_date(df_anomaly_yes):
+    # 날짜 별로 보기(어제 날짜 뽑을 때 사용)
+    df_anomaly_dict = {}
+    for i in range(len(df_anomaly_yes)):
+        temp_list = []
+        for j in range(len(df_anomaly_yes.iloc[i])):
+            if df_anomaly_yes.iloc[i][j][1] == 'Yes':
+                temp_list.append(df_anomaly_yes.columns[j])
+                #print(df_anomaly_yes.index[i],df_anomaly_yes.columns[j])
+            df_anomaly_dict[df_anomaly_yes.index[i]] = temp_list
+    return pd.DataFrame(df_anomaly_dict.items(), columns=['날짜','검색어'])
+    
