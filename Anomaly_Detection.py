@@ -4,14 +4,12 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 from tqdm.notebook import tqdm
 from prophet import Prophet
-from dateutil.relativedelta import relativedelta
 
-def Anomaly_Detect(df):
+def Anomaly_Detect(df, weight, min_value):
     final_df = df.copy()
     final_df['날짜'] = final_df['날짜'].astype('datetime64[ns]')
     df_anomaly = final_df[['날짜']]
-    weight = 1.5
-
+    
     final_df = final_df[final_df.columns[final_df.apply(lambda x: len(x[x.notnull().values]) > 30).values == True]] # 값이 30개 이상인 항목만
     for search_key in tqdm(final_df.columns[1:]): #'날짜'제외
         new_df = final_df[['날짜', search_key]]
@@ -29,7 +27,7 @@ def Anomaly_Detect(df):
         # 본래 abs를 붙여 낮게 나온 이상치도 출력하는 코드였지만, 검색어 특성상 높게 나온 지점만 산출하기 위해 abs 삭제
         #비율에 따라, 검색량이 절대적으로 적은(일정 수치 이하) 경우는 가중치를 바꾸도록??
         result['anomaly'] = result.apply(lambda x: 'Yes' if((x['error']) > weight*x['uncertainty']) else 'No', axis = 1) #원래는 1.5. 나는 0.4
-        result['anomaly'] = result.apply(lambda x: 'Low' if (x['anomaly']=='Yes') & (x['y'] < 10000) else 'Yes' if (x['anomaly']=='Yes') & (x['y'] >= 1000) else 'No', axis=1) #1000 이하는 Low로
+        result['anomaly'] = result.apply(lambda x: 'Low' if (x['anomaly']=='Yes') & (x['y'] < min_value) else 'Yes' if (x['anomaly']=='Yes') & (x['y'] >= min_value) else 'No', axis=1) #10000 이하는 Low로
         result = result.fillna(0)
         result['label'] = [[x[0],x[-1]] for x in result.values] # 컬럼에 y,anomaly 할당
         #result_new = result[result['anomaly']=='Yes']
