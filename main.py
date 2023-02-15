@@ -8,12 +8,18 @@ from natsort import natsorted
 
 # 자체 파일
 from keyword_extraction import *
+from SNA import *
 from config import *
 _cfg = config
 
+
+# 최소 출연 횟수
+min_num = 30
+
 # 파일 읽어오기
-files = glob.glob('../News_Crawler/data/news_raw/title_*.csv') #최신파일 읽어오기(폴더 경로 입력으로 바꾸기)
+files = glob.glob('../News_Crawler/data/news_raw/title_*.csv') #최신파일 읽어오기(폴더 경로 입력으로 바꾸기)--생성 날짜기준으로 변경
 recent_file = natsorted(seq=files, reverse=True)[0]
+print(recent_file)
 df = pd.read_csv(recent_file)
 # 텍스트 전처리
 df['title_c'] = df.apply(clean_text, axis=1)
@@ -26,3 +32,7 @@ df = apply_stopword(df,stopword)
 synonym_dict = _cfg['SYNONYM_DICT']
 df = apply_synonym_dict(df,synonym_dict) #synonym_dict = [] #(직접 입력도 가능)
 df.to_csv('data/result/news_noun.csv', encoding='utf-8-sig', index=False)
+
+edges = make_edge_list(df)
+edges_ = [x for x in edges if int(x[1]) >= min_num] 
+SNA(edges_)
