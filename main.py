@@ -4,7 +4,7 @@ import sys
 import pandas as pd
 
 #자체 파일
-from News_Crawler import *
+from crawler import *
 
 def main(search_, start_date, end_date, recursive='No'): #재귀로 사용되는 경우라면 저장안 하도록 recursive 기본값 설정
     #####뉴스크롤링 시작#####
@@ -53,7 +53,7 @@ def main(search_, start_date, end_date, recursive='No'): #재귀로 사용되는
             all_news_df = all_news_df.drop_duplicates(keep='first',ignore_index=True)
             naver_news_df = naver_news_df.drop_duplicates(keep='first',ignore_index=True)
             #데이터 프레임 저장
-            now = datetime.datetime.now()
+            #now = datetime.datetime.now()
             if recursive == 'No': #재귀함수로 다시 들어온 경우가 아니라면 저장실행
                 all_news_df.to_csv(f'./data/news_raw/title_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
                 naver_news_df.to_csv(f'./data/news_raw/naver_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
@@ -100,7 +100,7 @@ def main(search_, start_date, end_date, recursive='No'): #재귀로 사용되는
             all_news_df = all_news_df.drop_duplicates(keep='first',ignore_index=True)
             naver_news_df = naver_news_df.drop_duplicates(keep='first',ignore_index=True)
             #데이터 프레임 저장
-            now = datetime.datetime.now()
+            #now = datetime.datetime.now()
             all_news_df.to_csv(f'./data/news_raw/title_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
             naver_news_df.to_csv(f'./data/news_raw/naver_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
             return all_news_df, naver_news_df
