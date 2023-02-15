@@ -1,8 +1,4 @@
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import plotly.express as px
-from tqdm.notebook import tqdm
 from prophet import Prophet
 
 def Anomaly_Detect(df, weight, min_value):
@@ -11,7 +7,7 @@ def Anomaly_Detect(df, weight, min_value):
     df_anomaly = final_df[['날짜']]
     
     final_df = final_df[final_df.columns[final_df.apply(lambda x: len(x[x.notnull().values]) > 30).values == True]] # 값이 30개 이상인 항목만
-    for search_key in tqdm(final_df.columns[1:]): #'날짜'제외
+    for search_key in final_df.columns[1:]: #'날짜'제외
         new_df = final_df[['날짜', search_key]]
         new_df = new_df.set_index('날짜')
         new_df_prophet = new_df.reset_index()[['날짜', new_df.columns[0]]].rename({'날짜':'ds', new_df.columns[0]:'y'}, axis='columns')

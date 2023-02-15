@@ -1,0 +1,11 @@
+- '날짜'를 'date' 혹은 1번째 컬럼으로 변경
+- columns(검색어)를 변수(Variable)로
+- main에서 폴더지정이 아닌 사용자의 경로(파일) input으로
+- cp949가 아닌 utf-8로? (영어 데이터 인식여부 확인)
+- 이메일 기능 추가
+- 스케줄러 연결
+- 카카오톡/이메일 기능을 optional로
+- print문 '검색어'로 나오는 내용 수정(send_me 파일을 PJ1의 main으로 빼야하나?)
+- 상한뿐만 아니라 하한도 표시되도록(optional로 구현하여 선택 가능하도록)
+- weight,min_value optional로
+- 함수들 'df_xxx' 가 아닌 'df'로?? (코드정리)

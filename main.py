@@ -7,7 +7,7 @@ from Anomaly_Detection import *
 from Kakao_send_me import *
 
 def main():
-    files = glob.glob('../Naver_Search_Amount/data/result/search_result_absolute*.csv') #최신파일 읽어오기
+    files = glob.glob('../Naver_Search_Amount/data/result/search_result_absolute*.csv') #최신파일 읽어오기(폴더 경로 입력으로 바꾸기)
     recent_file = natsorted(seq=files, reverse=True)[0]
     df = pd.read_csv(recent_file, encoding='cp949')
     df['날짜'] = df['날짜'].astype('datetime64[ns]')
@@ -27,7 +27,7 @@ def main():
 
 
     # 알림 기능(스케줄러 연결 필요)
-    # 어제의 이상검색어가 있을 경우 카카오톡으로 알림(사용 안 할 경우 꺼놓기)
+    # 어제의 이상검색어가 있을 경우 카카오톡으로 알림(사용 안 할 경우 꺼놓기)---옵션으로 변경
     yesterday = str(datetime.now().date() - relativedelta(days=1))
     if df_anomaly_date['날짜'].iloc[-1] == yesterday:
         anomaly_yesterday = df_anomaly_date[df_anomaly_date['날짜'] == yesterday]['검색어'].values[0] #어제 이상치..
