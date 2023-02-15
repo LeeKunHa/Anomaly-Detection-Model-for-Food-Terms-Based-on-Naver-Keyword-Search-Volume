@@ -1,10 +1,14 @@
 # 라이브러리
 import pandas as pd
+import glob
+from natsort import natsorted
 # 자체 파일
 from Anomaly_Detection import *
 from Kakao_send_me import *
 
-df = pd.read_csv('../Naver_Search_Amount/data/result/search_result_absolute20230213.csv', encoding='cp949') #최신파일 읽어오기로
+files = glob.glob('../Naver_Search_Amount/data/result/search_result_relative*.csv') #최신파일 읽어오기
+recent_file = natsorted(seq=files, reverse=True)[0]
+df = pd.read_csv(recent_file, encoding='cp949')
 df['날짜'] = df['날짜'].astype('datetime64[ns]')
 # 시계열 그래프 작성을 위해 값이 2개 최소 이상인 검색어만 추출
 df_ = df[df.columns[df.isnull().sum() < len(df)-1]]
