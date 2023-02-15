@@ -3,10 +3,9 @@ from Absolute_Value import *
 from config import *
 _cfg = config
 
-
-if __name__ == "__main__":
-    
+def main():
     # 검색어 목록 config에서 불러오기(데이터 비공개 목적으로 config파일에 포함했을 뿐, main파일에 리스트로 바로 작성해도 문제없습니다.)
+    #keyword_list = ['검색어1','검색어2',...]
     keyword_list = sum(_cfg['Keyword'].values(), [])
     #공백제거(한달치 검색량에 안 잡힘)
     keyword_list = [x.replace(' ','') for x in keyword_list]
@@ -70,3 +69,7 @@ if __name__ == "__main__":
     final_df.to_csv(f'data/result/search_result_absolute{date}.csv', index=False, encoding='cp949')
     #final_df = pd.read_csv(f'data/result/search_result_absolute{date}.csv')
     #final_df['날짜'] = final_df['날짜'].astype('datetime64[ns]')
+
+
+if __name__ == "__main__":
+    main()
