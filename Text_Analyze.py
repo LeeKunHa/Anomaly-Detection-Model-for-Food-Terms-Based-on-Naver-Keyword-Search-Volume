@@ -148,11 +148,11 @@ def tfidf(df):
             corpus.append(doc.strip())
 
     tfidfv = TfidfVectorizer().fit(corpus)
-    vectorizer = TfidfVectorizer()
-    sp_matrix = vectorizer.fit_transform(corpus)
+    #vectorizer = TfidfVectorizer()
+    #sp_matrix = vectorizer.fit_transform(corpus)
 
     word2id = defaultdict(lambda : 0)
-    for idx, feature in enumerate(vectorizer.get_feature_names_out()):
+    for idx, feature in enumerate(tfidfv.get_feature_names_out()):
         word2id[feature] = idx
     tfidf = TfidfVectorizer(max_features=500, stop_words='english')
     tdm = tfidf.fit_transform(df['keyword_mecab'].apply(lambda x: ' '.join(x)))
@@ -160,4 +160,4 @@ def tfidf(df):
         '단어': tfidf.get_feature_names_out(),
         '빈도': tdm.sum(axis=0).flat
     })
-    print(word_count.sort_values('빈도', ascending=False).head(50))#.reset_index().drop(['index'],axis=1)
+    return word_count.sort_values('빈도', ascending=False).head(50)#.reset_index().drop(['index'],axis=1)
