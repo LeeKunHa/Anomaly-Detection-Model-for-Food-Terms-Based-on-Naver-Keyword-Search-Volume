@@ -1,14 +1,14 @@
 # 자체 파일
-#from Relative_Value import *
-#from Absolute_Value import *
-#from config import *
-#_cfg = config
+from Relative_Value import *
+from Absolute_Value import *
+from config import *
+_cfg = config
 
 #프로젝트용
-from Naver_Search_Amount.Relative_Value import *
-from Naver_Search_Amount.Absolute_Value import *
-from Naver_Search_Amount.config import *
-_cfg = config
+#from Naver_Search_Amount.Relative_Value import *
+#from Naver_Search_Amount.Absolute_Value import *
+#from Naver_Search_Amount.config import *
+#_cfg = config
 
 def main():
     # 검색어 목록 config에서 불러오기(데이터 비공개 목적으로 config파일에 포함했을 뿐, main파일에 리스트로 바로 작성해도 문제없습니다.)
