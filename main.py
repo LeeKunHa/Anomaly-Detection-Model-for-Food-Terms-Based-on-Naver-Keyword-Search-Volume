@@ -27,17 +27,21 @@ def main():
     df = apply_synonym_dict(df,synonym_dict) #synonym_dict = [] #(직접 입력도 가능)
     df.to_csv('data/result/news_noun.csv', encoding='utf-8-sig', index=False)
 
+    #워드클라우드
     word_counter_ = make_corpus(df)
     word_cloud(word_counter_)
 
+    #SNA
     edges = make_edge_list(df)
     draw_SNA(df, edges)
     #plt.show() # 시각화 결과 창 실행
 
+    #Tf-idf
     key_keyword = tfidf(df)
-    return key_keyword, recent_file
+    return df, key_keyword, recent_file
+
 
 if __name__ == "__main__":
-    key_keyword, recent_file = main()
+    df, key_keyword, recent_file = main()
     print(recent_file)
     print(key_keyword)
