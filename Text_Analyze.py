@@ -128,3 +128,27 @@ def word_cloud(word_counter):
     plt.imshow(wc.generate_from_frequencies(dict(noun_list)))
     plt.savefig("data/visualization/word_cloud.png")
 
+
+
+#주요키워드
+def tfidf(df):
+    corpus = []
+    with open('data/result/corpus.txt', 'r', encoding='utf-8') as f:
+        for doc in f:
+            corpus.append(doc.strip())
+
+    tfidfv = TfidfVectorizer().fit(corpus)
+
+    vectorizer = TfidfVectorizer()
+    sp_matrix = vectorizer.fit_transform(corpus)
+
+    word2id = defaultdict(lambda : 0)
+    for idx, feature in enumerate(vectorizer.get_feature_names_out()):
+        word2id[feature] = idx
+    tfidf = TfidfVectorizer(max_features=500, stop_words='english')
+    tdm = tfidf.fit_transform(df['keyword_mecab'].apply(lambda x: ' '.join(x)))
+    word_count = pd.DataFrame({
+        '단어': tfidf.get_feature_names_out(),
+        '빈도': tdm.sum(axis=0).flat
+    })
+    print(word_count.sort_values('빈도', ascending=False).head(50))#.reset_index().drop(['index'],axis=1)
