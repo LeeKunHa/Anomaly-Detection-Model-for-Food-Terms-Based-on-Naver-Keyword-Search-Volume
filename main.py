@@ -6,7 +6,10 @@ import pandas as pd
 #자체 파일
 from crawler import *
 
-def main(search_, start_date, end_date, recursive='No'): #재귀로 사용되는 경우라면 저장안 하도록 recursive 기본값 설정
+#프로젝트용
+#from News_Crawler.crawler import *
+
+def main(search_=input(f'검색어를 입력하세요: '), start_date=input(f'시작일자를 입력하세요(YYMMDD): '), end_date=input(f'종료일자를 입력하세요(YYMMDD): '), recursive='No'): #재귀로 사용되는 경우라면 저장안 하도록 recursive 기본값 설정
     #####뉴스크롤링 시작#####
     #검색어 입력
     #search_ = input("검색할 키워드를 입력해주세요:")
@@ -108,7 +111,4 @@ def main(search_, start_date, end_date, recursive='No'): #재귀로 사용되는
 
 # main 안에 인자는 '검색어', '시작일', '종료일'
 if __name__ == "__main__":
-    search_keyword = input(f'검색어를 입력하세요: ')
-    start_date = input(f'시작일자를 입력하세요(YYMMDD): ')
-    end_date = input(f'종료일자를 입력하세요(YYMMDD): ')
-    all_news_df, naver_news_df = main(search_keyword, start_date, end_date)
+    all_news_df, naver_news_df = main()
