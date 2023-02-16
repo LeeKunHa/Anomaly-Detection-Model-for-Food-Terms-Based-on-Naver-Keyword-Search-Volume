@@ -9,6 +9,12 @@ from text_analyze import *
 from config import *
 _cfg = config
 
+#프로젝트용
+#from Text_Analyze.keyword_extraction import *
+#from Text_Analyze.text_analyze import *
+#from Text_Analyze.config import *
+#_cfg = config
+
 def main():
     # 파일 읽어오기
     files = glob.glob('../News_Crawler/data/news_raw/title_*.csv') #최신파일 읽어오기(폴더 경로 입력으로 바꾸기)--생성 날짜기준으로 변경
