@@ -1,6 +1,13 @@
-from Relative_Value import *
-from Absolute_Value import *
-from config import *
+# 자체 파일
+#from Relative_Value import *
+#from Absolute_Value import *
+#from config import *
+#_cfg = config
+
+#프로젝트용
+from Naver_Search_Amount.Relative_Value import *
+from Naver_Search_Amount.Absolute_Value import *
+from Naver_Search_Amount.config import *
 _cfg = config
 
 def main():
