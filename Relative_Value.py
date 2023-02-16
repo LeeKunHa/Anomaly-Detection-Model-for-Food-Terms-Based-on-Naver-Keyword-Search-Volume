@@ -9,6 +9,10 @@ from dateutil.relativedelta import *
 from config import *
 _cfg = config
 
+#프로젝트용
+#from Naver_Search_Amount.config import *
+#_cfg = config
+
 #경고제거
 import warnings
 warnings.filterwarnings(action='ignore')

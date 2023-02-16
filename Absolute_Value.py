@@ -12,6 +12,11 @@ from config import *
 _cfg = config
 import Relative_Value
 
+#프로젝트용
+#from Naver_Search_Amount.Relative_Value import *
+#from Naver_Search_Amount.config import *
+#_cfg = config
+
 #경고제거
 import warnings
 warnings.filterwarnings(action='ignore')
