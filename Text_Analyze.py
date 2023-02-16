@@ -1,22 +1,16 @@
 import networkx as nx
 import operator
-import gensim
 import pandas as pd
+import matplotlib.pyplot as plt
 from collections import Counter
 from community import community_louvain as lv
 from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import defaultdict
-import nltk
-import numpy as np
-import matplotlib.pyplot as plt
 from wordcloud import WordCloud
-
-from PIL import Image
-from wordcloud import STOPWORDS
 
 # 폰트 설정을 위한 font_manager import
 import matplotlib.font_manager as fm
-import matplotlib.pyplot as plt
+
 # 폰트 설정
 #fm._rebuild()# 1회에 한해 실행해준다. (폰트 새로고침, 여러번 해줘도 관계는 없다.)
 font_fname = 'C:\\Windows\\Fonts\\HMKMRHD.ttf'
