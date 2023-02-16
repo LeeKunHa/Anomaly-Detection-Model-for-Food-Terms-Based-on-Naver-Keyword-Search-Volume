@@ -1,14 +1,25 @@
 import networkx as nx
 import operator
+import gensim
+import pandas as pd
 from collections import Counter
 from community import community_louvain as lv
+from sklearn.feature_extraction.text import TfidfVectorizer
+from collections import defaultdict
+import nltk
+import numpy as np
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+
+from PIL import Image
+from wordcloud import STOPWORDS
 
 # 폰트 설정을 위한 font_manager import
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 # 폰트 설정
 #fm._rebuild()# 1회에 한해 실행해준다. (폰트 새로고침, 여러번 해줘도 관계는 없다.)
-font_fname = 'C:/Users/user/AppData/Local/Microsoft/Windows/Fonts/SDSamliphopangcheTTFBasic.ttf'      # 여기서 폰트는 C:/Windows/Fonts를 참고해도 좋다.
+font_fname = 'C:\\Windows\\Fonts\\HMKMRHD.ttf'
 fontprop = fm.FontProperties(fname=font_fname, size=18).get_name()
 
 def make_edge_list(df):
@@ -69,14 +80,51 @@ def draw_SNA(edges):
         'width': 1,
         'with_labels': True,
         'font_weight': 'regular',
-        'alpha' : 0.5
+        'alpha' : 0.5 #투명도
     }
 
     plt.figure(figsize=(15,15))
     nx.draw(G, node_size=sizes, pos=nx.spring_layout(G, k=3.5, iterations=100), **options, font_family=fontprop)  # font_family로 폰트 등록
     ax = plt.gca()
     ax.collections[0].set_edgecolor("#555555")
-    plt.show()
+    plt.savefig("data/visualization/SNA.png")
 
 
-#주요키워드
+
+# 동시출연빈도(클래스)
+class Documents:
+    def __init__(self, path):
+        self.path = path
+    def __iter__(self):
+        with open(self.path, encoding='utf-8') as f:
+            for doc in f:
+                yield doc.strip().split()
+# 동시출연빈도(함수)
+def make_corpus(df):
+    # 파일로 저장
+    with open('data/result/corpus.txt','w',encoding='UTF-8') as f:
+        for i in df['keyword_mecab']: #이미 전처리가 된 파일을 가져왔기때문에 추가적인 전처리 작업 없이 진행
+            f.write(' '.join(s for s in i)+'\n')
+
+    corpus_path = 'data/result/corpus.txt'
+    documents = Documents(corpus_path)
+    word_counter = Counter((word for words in documents for word in words))
+    return word_counter
+
+#워드클라우드
+def word_cloud(word_counter):
+    noun_list = word_counter.most_common(100)
+    font_path = font_fname
+    wc = WordCloud(font_path=font_path,
+            background_color="white",
+            #mask = mask,
+            width=1000,
+            height=1000, 
+            max_words=100,
+            max_font_size=300)
+    wc.generate_from_frequencies(dict(noun_list))
+    plt.figure(figsize=(10,10))
+    plt.axis('off')
+    plt.imshow(wc.generate_from_frequencies(dict(noun_list)))
+    plt.savefig("data/visualization/word_cloud.png")
+
