@@ -5,7 +5,7 @@ from natsort import natsorted
 
 # 자체 파일
 from keyword_extraction import *
-from Text_Analyze import *
+from text_analyze import *
 from config import *
 _cfg = config
 
