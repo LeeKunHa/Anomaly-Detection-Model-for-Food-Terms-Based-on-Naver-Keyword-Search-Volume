@@ -44,7 +44,17 @@ def make_edge_list(df):
     nx.write_gexf(G, 'data/result/result.gexf')
     return edges
 
-def draw_SNA(edges):
+def draw_SNA(df, edges_):    
+    # 최소 출연 횟수
+    if len(df) <= 100:
+        min_num = 5
+    elif len(df) <= 500:
+        min_num = 20
+    elif len(df) <= 1000:
+        min_num = 30
+    else: min_num = 50
+    edges = [x for x in edges_ if int(x[1]) >= min_num] #gexf 파일에 적용한 내용은 min_num이 적용되지 않음(make_edge_list 단계에서 저장)
+    
     # 중심성 척도 계산을 위한 Graph를 만든다
     G_centrality = nx.Graph((x, y, {'weight': v}) for (x, y), v in edges)
     # 빈도수가 일정 수 이상인 단어쌍에 대해서만 edge(간선)을 표현한다.
@@ -138,7 +148,6 @@ def tfidf(df):
             corpus.append(doc.strip())
 
     tfidfv = TfidfVectorizer().fit(corpus)
-
     vectorizer = TfidfVectorizer()
     sp_matrix = vectorizer.fit_transform(corpus)
 
