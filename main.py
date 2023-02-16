@@ -2,9 +2,14 @@
 import pandas as pd
 import glob
 from natsort import natsorted
+
 # 자체 파일
 from Anomaly_Detection import *
 from Kakao_send_me import *
+
+#프로젝트용
+#from Anomaly_Detection_prophet.Anomaly_Detection import *
+#from Anomaly_Detection_prophet.Kakao_send_me import *
 
 def main():
     files = glob.glob('../Naver_Search_Amount/data/result/search_result_absolute*.csv') #최신파일 읽어오기(폴더 경로 입력으로 바꾸기)
