@@ -3,3 +3,7 @@
 - nx 파라미터 입력 추가(연결중심/매개중심 등 선택 가능하도록)
 - df 경로 바꾸기
 - (keyword_by_timeline)폰트, 워드클라우드 출력 안 되게 수정해야 함
+- 사용자사전 데이터기반생성(https://github.com/lovit/soynlp)
+- qyqt, plotly 등을 이용해 GUI 만들기 (+Elastic 검색엔진)
+- html로 결과물 일괄 저장?
+- 반응형으로 제작
