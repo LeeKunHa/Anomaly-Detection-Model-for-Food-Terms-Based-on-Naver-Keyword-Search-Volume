@@ -8,6 +8,10 @@ mecab = Mecab(dicpath=r"C:/mecab/mecab-ko-dic")
 from config import *
 _cfg = config
 
+#프로젝트용
+#from Text_Analyze.config import *
+#_cfg = config
+
 """ 필요 없는 문자 제거 """
 def clean_text(row):
     text = row['title']
