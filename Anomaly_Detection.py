@@ -1,5 +1,6 @@
 import pandas as pd
 from prophet import Prophet
+from datetime import datetime,timedelta
 
 def Anomaly_Detect(df, weight, min_value):
     final_df = df.copy()
@@ -78,4 +79,29 @@ def key_date(df_anomaly_yes):
                 #print(df_anomaly_yes.index[i],df_anomaly_yes.columns[j])
             df_anomaly_dict[df_anomaly_yes.index[i]] = temp_list
     return pd.DataFrame(df_anomaly_dict.items(), columns=['날짜','검색어'])
-    
+
+# [검색어, 시작일자, 종료일자] 형식 파일 생성
+def make_date(df_anomaly_key):
+    df_date = pd.DataFrame(columns=['검색어', '시작일자', '종료일자'])
+    for i in range(len(df_anomaly_key)):
+        anomaly_list = df_anomaly_key['날짜'][i].strip('[]').split()
+        anomaly_list = [x[1:11] for x in anomaly_list]
+        start_date = []
+        end_date = []
+        for day in anomaly_list:
+            day = datetime.strptime(day,"%Y-%m-%d") #날짜에 해당하는 부분만 추출
+            if (str(day+timedelta(days=1))[:10] in anomaly_list) and (str(day-timedelta(days=1))[:10] not in anomaly_list):
+                day = ''.join(str(day).split('-'))[:8]
+                start_date.append(int(day))
+            elif (str(day-timedelta(days=1))[:10] in anomaly_list) and (str(day+timedelta(days=1))[:10] not in anomaly_list):
+                day = ''.join(str(day).split('-'))[:8]
+                end_date.append(int(day))
+            elif (str(day-timedelta(days=1))[:10] not in anomaly_list) and (str(day-timedelta(days=1))[:10] not in anomaly_list):
+                day = ''.join(str(day).split('-'))[:8]
+                start_date.append(int(day))
+                end_date.append(int(day))
+        temp_df = pd.DataFrame([df_anomaly_key.index[i],start_date,end_date]).T
+        temp_df.columns = ['검색어', '시작일자', '종료일자']
+        df_date = pd.concat([df_date, temp_df])
+    #df_date = df_date.reset_index().drop('index',axis=1)
+    return df_date

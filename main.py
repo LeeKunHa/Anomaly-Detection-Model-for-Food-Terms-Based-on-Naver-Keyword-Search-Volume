@@ -1,6 +1,7 @@
 # 라이브러리
 import pandas as pd
 import glob
+import datetime
 from natsort import natsorted
 
 # 자체 파일
@@ -29,7 +30,11 @@ def main():
     df_anomaly_key.to_csv('data/anomaly_keyword.csv', encoding='cp949', index=False)
     df_anomaly_date = key_date(df_anomaly_yes)
     df_anomaly_date.to_csv('data/anomaly_date.csv', encoding='cp949', index=False)
-
+                    
+    df_anomaly_key_ = pd.read_csv('data/anomaly_keyword.csv', index_col='검색어', encoding='cp949')
+    df_anomaly_key_ = df_anomaly_key_[df_anomaly_key_['날짜'].values != '[]']
+    df_date = make_date(df_anomaly_key_)
+    df_date.to_csv('data/result_for_crawler.csv', encoding='cp949', index=False)
 
     # 알림 기능(스케줄러 연결 필요)
     # 어제의 이상검색어가 있을 경우 카카오톡으로 알림(사용 안 할 경우 꺼놓기)---옵션으로 변경

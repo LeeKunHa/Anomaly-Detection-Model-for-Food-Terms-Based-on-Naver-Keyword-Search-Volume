@@ -9,6 +9,11 @@ from dateutil.relativedelta import relativedelta
 # 자체 파일
 from config import *
 _cfg = config
+
+# 프로젝트용
+#from Anomaly_Detection_prophet.config import *
+#_cfg = config
+
 def kakao_send_text(message):
     url = "https://kapi.kakao.com/v2/api/talk/memo/default/send"
     # 사용자 토큰
