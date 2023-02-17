@@ -7,13 +7,14 @@ from dateutil.relativedelta import *
 from powernad.API.Campaign import *
 from powernad.API.RelKwdStat import *
 from time import sleep
+
 #자체 파일
 from config import *
 _cfg = config
 import Relative_Value
 
 #프로젝트용
-#from Naver_Search_Amount.Relative_Value import *
+#from Naver_Search_Amount import Relative_Value
 #from Naver_Search_Amount.config import *
 #_cfg = config
 
