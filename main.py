@@ -9,7 +9,7 @@ from crawler import *
 #프로젝트용
 #from News_Crawler.crawler import *
 
-def main(search_=input(f'검색어를 입력하세요: '), start_date=input(f'시작일자를 입력하세요(YYMMDD): '), end_date=input(f'종료일자를 입력하세요(YYMMDD): '), recursive='No'): #재귀로 사용되는 경우라면 저장안 하도록 recursive 기본값 설정
+def main(search_, start_date, end_date, recursive='No'): #재귀로 사용되는 경우라면 저장안 하도록 recursive 기본값 설정
     #####뉴스크롤링 시작#####
     #검색어 입력
     #search_ = input("검색할 키워드를 입력해주세요:")
@@ -45,7 +45,6 @@ def main(search_=input(f'검색어를 입력하세요: '), start_date=input(f'�
     # url 생성
     while True:
         url_ = f"https://search.naver.com/search.naver?where=news&sm=tab_pge&query={search}&sort=2&ds={s1}&de={e1}&nso=so:dd,p:from{s2}to{e2}&start={page}"
-
         news_url = []
         url = articles_crawler(url_)
         news_url.append(url)
@@ -58,8 +57,8 @@ def main(search_=input(f'검색어를 입력하세요: '), start_date=input(f'�
             #데이터 프레임 저장
             #now = datetime.datetime.now()
             if recursive == 'No': #재귀함수로 다시 들어온 경우가 아니라면 저장실행
-                all_news_df.to_csv(f'./data/news_raw/title_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
-                naver_news_df.to_csv(f'./data/news_raw/naver_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
+                all_news_df.to_csv(f'./data/title_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
+                naver_news_df.to_csv(f'./data/naver_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
             return all_news_df, naver_news_df
         
         #모든 뉴스 크롤러 실행(모든 뉴스의 제목)
@@ -104,11 +103,25 @@ def main(search_=input(f'검색어를 입력하세요: '), start_date=input(f'�
             naver_news_df = naver_news_df.drop_duplicates(keep='first',ignore_index=True)
             #데이터 프레임 저장
             #now = datetime.datetime.now()
-            all_news_df.to_csv(f'./data/news_raw/title_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
-            naver_news_df.to_csv(f'./data/news_raw/naver_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
+            all_news_df.to_csv(f'./data/title_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
+            naver_news_df.to_csv(f'./data/naver_{search_}_{start_date}_{end_date}.csv', encoding='utf-8-sig',index=False)
             return all_news_df, naver_news_df
 
 
 # main 안에 인자는 '검색어', '시작일', '종료일'
 if __name__ == "__main__":
-    all_news_df, naver_news_df = main()
+    #search_=input(f'검색어를 입력하세요: ') 
+    #start_date=input(f'시작일자를 입력하세요(YYMMDD): ')
+    #end_date=input(f'종료일자를 입력하세요(YYMMDD): ')
+    #all_news_df, naver_news_df = main(search_, start_date, end_date)
+
+    # 프로젝트용
+    df_date = pd.read_csv('../Anomaly_Detection_prophet/data/result_for_crawler.csv', encoding='cp949')
+    for i in range(len(df_date)):
+        for j in range(len(df_date['시작일자'][i].strip('[]').split())):
+            search_=df_date['검색어'][i]
+            start_date=str(df_date['시작일자'][i].strip('[]').split()[j])[:8]
+            end_date=str(df_date['종료일자'][i].strip('[]').split()[j])[:8]
+            print(search_,start_date,end_date)
+            all_news_df, naver_news_df = main(search_, start_date, end_date,'No')
+    
