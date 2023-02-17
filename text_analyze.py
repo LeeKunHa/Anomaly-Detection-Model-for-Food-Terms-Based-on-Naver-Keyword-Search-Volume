@@ -38,7 +38,7 @@ def make_edge_list(df):
     nx.write_gexf(G, 'data/result/result.gexf')
     return edges
 
-def draw_SNA(df, edges_):    
+def draw_SNA(df, edges_, file_name):    
     # 최소 출연 횟수
     if len(df) <= 100:
         min_num = 5
@@ -91,7 +91,7 @@ def draw_SNA(df, edges_):
     nx.draw(G, node_size=sizes, pos=nx.spring_layout(G, k=3.5, iterations=100), **options, font_family=fontprop)  # font_family로 폰트 등록
     ax = plt.gca()
     ax.collections[0].set_edgecolor("#555555")
-    plt.savefig("data/visualization/SNA.png")
+    plt.savefig(f"data/visualization/SNA_{file_name}.png")
 
 
 
@@ -116,7 +116,7 @@ def make_corpus(df):
     return word_counter
 
 #워드클라우드
-def word_cloud(word_counter):
+def draw_word_cloud(word_counter, file_name):
     noun_list = word_counter.most_common(100)
     font_path = font_fname
     wc = WordCloud(font_path=font_path,
@@ -130,7 +130,7 @@ def word_cloud(word_counter):
     plt.figure(figsize=(10,10))
     plt.axis('off')
     plt.imshow(wc.generate_from_frequencies(dict(noun_list)))
-    plt.savefig("data/visualization/word_cloud.png")
+    plt.savefig(f"data/visualization/word_cloud_{file_name}.png")
 
 
 
