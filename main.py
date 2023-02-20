@@ -15,8 +15,7 @@ _cfg = config
 #from Text_Analyze.config import *
 #_cfg = config
 
-def main(recent_file):
-
+def main(recent_file):        
     # 파일 읽어오기
     df = pd.read_csv(recent_file)
 
@@ -43,21 +42,27 @@ def main(recent_file):
     #plt.show() # 시각화 결과 창 실행
 
     #Tf-idf
-    key_keyword = tfidf(df, file_name_)
-    print(key_keyword)
-    #return key_keyword
-
+    tfidf(df, file_name_)
+    
+    # 완료한 결과 resume_list에 추가
+    resume_list = open("resume_list.txt", 'a')
+    resume_list.write(recent_file[27:-4]+'\n')
+    resume_list.close()
 
 if __name__ == "__main__":
     #df, key_keyword, recent_file = main()
     
-    # 최신파일 읽기
-    #files = glob.glob('../News_Crawler/data/title_*.csv') #최신파일 읽어오기(폴더 경로 입력으로 바꾸기)--생성 날짜기준으로 변경
-    #recent_file = natsorted(seq=files, reverse=True)[0]
-
     # 폴더 내 모든 파일 읽기
     file_path = ('../News_Crawler/data/')
     files = glob.glob(f'{file_path}title_*.csv')
     files = natsorted(files)
+    
+    # 이미 저장된 파일 읽어오기(이어하기 옵션)
+    resume_ = []
+    with open("resume_list.txt", "r") as resume_list:
+        for i in resume_list.readlines():
+            resume_.append(i[:-1])
+    files = [x for x in files if x[27:-4] not in resume_]
+
     for recent_file in files:
         main(recent_file)
