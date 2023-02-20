@@ -110,18 +110,33 @@ def main(search_, start_date, end_date, recursive='No'): #재귀로 사용되는
 
 # main 안에 인자는 '검색어', '시작일', '종료일'
 if __name__ == "__main__":
-    search_=input(f'검색어를 입력하세요: ') 
-    start_date=input(f'시작일자를 입력하세요(YYMMDD): ')
-    end_date=input(f'종료일자를 입력하세요(YYMMDD): ')
-    all_news_df, naver_news_df = main(search_, start_date, end_date)
+    #search_=input(f'검색어를 입력하세요: ') 
+    #start_date=input(f'시작일자를 입력하세요(YYMMDD): ')
+    #end_date=input(f'종료일자를 입력하세요(YYMMDD): ')
+    #all_news_df, naver_news_df = main(search_, start_date, end_date)
 
     # 프로젝트용
-    #df_date = pd.read_csv('../Anomaly_Detection_prophet/data/result_for_crawler.csv', encoding='cp949')
-    #for i in range(len(df_date)):
-    #    for j in range(len(df_date['시작일자'][i].strip('[]').split())):
-    #        search_=df_date['검색어'][i]
-    #        start_date=str(df_date['시작일자'][i].strip('[]').split()[j])[:8]
-    #        end_date=str(df_date['종료일자'][i].strip('[]').split()[j])[:8]
-    #        print(search_,start_date,end_date)
-    #        all_news_df, naver_news_df = main(search_, start_date, end_date,'No')
+    df_date = pd.read_csv('../Anomaly_Detection_prophet/data/result_for_crawler.csv', encoding='cp949')
     
+    # 이미 저장된 파일 읽어오기(이어하기 옵션)
+    resume_ = []
+    with open("resume_list.txt", "r") as resume_list:
+        for i in resume_list.readlines():
+            resume_.append(i[:-1])
+    #files = [x for x in df_date if x[27:-4] not in resume_]
+    """
+    for i in range(len(df_date)):
+        for j in range(len(df_date['시작일자'][i].strip('[]').split())):
+            search_=df_date['검색어'][i]
+            start_date=str(df_date['시작일자'][i].strip('[]').split()[j])[:8]
+            end_date=str(df_date['종료일자'][i].strip('[]').split()[j])[:8]
+            print(search_,start_date,end_date)
+            if f"{search_}_{start_date}_{end_date}" in resume_:
+                pass
+            else:
+                all_news_df, naver_news_df = main(search_, start_date, end_date,'No')
+                # 완료한 결과 resume_list에 추가
+                resume_list = open("resume_list.txt", 'a')
+                resume_list.write(f"{search_}_{start_date}_{end_date}\n")
+                resume_list.close()
+    """
