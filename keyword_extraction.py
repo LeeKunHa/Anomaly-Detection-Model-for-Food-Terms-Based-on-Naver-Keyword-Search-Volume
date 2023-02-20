@@ -24,6 +24,9 @@ def clean_text(row):
     pattern = '([ㄱ-ㅎㅏ-ㅣ]+)'
     text = re.sub(pattern=pattern, repl='', string=text)
     # print("한글 자음 모음 제거 : ", text , "\n")
+    #pattern = '([一-龥]+)'
+    #text = re.sub(pattern=pattern, repl='', string=text)
+    # print("한자 제거 : ", text , "\n")
     pattern = '<[^>]*>'
     text = re.sub(pattern=pattern, repl='', string=text)
     # print("태그 제거 : " , text , "\n")
