@@ -55,17 +55,26 @@ def draw_SNA(df, edges_, file_name):
     for ind in range((len(edges))):
         G_centrality.add_edge(edges[ind][0][0], edges[ind][0][1], weight=edges[ind][1])
 
-    dgr = nx.degree_centrality(G_centrality)        # 연결 중심성
-    btw = nx.betweenness_centrality(G_centrality)   # 매개 중심성
-    cls = nx.closeness_centrality(G_centrality)     # 근접 중심성
-    egv = nx.eigenvector_centrality(G_centrality, max_iter=200)   # 고유벡터 중심성
+    #dgr = nx.degree_centrality(G_centrality)        # 연결 중심성
+    #btw = nx.betweenness_centrality(G_centrality)   # 매개 중심성
+    #cls = nx.closeness_centrality(G_centrality)     # 근접 중심성
+    #egv = nx.eigenvector_centrality(G_centrality, max_iter=200)   # 고유벡터 중심성
     pgr = nx.pagerank(G_centrality)                 # 페이지 랭크
 
     # 중심성이 큰 순서대로 정렬한다.
-    sorted_dgr = sorted(dgr.items(), key=operator.itemgetter(1), reverse=True)
-    sorted_btw = sorted(btw.items(), key=operator.itemgetter(1), reverse=True)
-    sorted_cls = sorted(cls.items(), key=operator.itemgetter(1), reverse=True)
-    sorted_egv = sorted(egv.items(), key=operator.itemgetter(1), reverse=True)
+    try: 
+        egv = nx.eigenvector_centrality(G_centrality, max_iter=200)   # 고유벡터 중심성
+        sorted_egv = sorted(egv.items(), key=operator.itemgetter(1), reverse=True)
+        param = sorted_egv
+    except: # 고유벡터 중심성 생성 오류가 발생할 경우 연결 중심성으로
+        dgr = nx.degree_centrality(G_centrality)        # 연결 중심성
+        sorted_dgr = sorted(dgr.items(), key=operator.itemgetter(1), reverse=True)
+        param = sorted_dgr
+    #btw = nx.betweenness_centrality(G_centrality)   # 매개 중심성
+    #sorted_btw = sorted(btw.items(), key=operator.itemgetter(1), reverse=True)
+    #cls = nx.closeness_centrality(G_centrality)     # 근접 중심성
+    #sorted_cls = sorted(cls.items(), key=operator.itemgetter(1), reverse=True)
+    
     sorted_pgr = sorted(pgr.items(), key=operator.itemgetter(1), reverse=True)
 
     # 단어 네트워크를 그려줄 Graph 선언
@@ -73,7 +82,7 @@ def draw_SNA(df, edges_, file_name):
     # 페이지 랭크에 따라 두 노드 사이의 연관성을 결정한다. (단어쌍의 연관성)
     # 연결 중심성으로 계산한 척도에 따라 노드의 크기가 결정된다. (단어의 등장 빈도수)
     for i in range(len(sorted_pgr)):
-        G.add_node(sorted_pgr[i][0], nodesize=sorted_egv[i][1])
+        G.add_node(sorted_pgr[i][0], nodesize=param[i][1])
     for ind in range((len(edges))):
         G.add_weighted_edges_from([(edges[ind][0][0], edges[ind][0][1], edges[ind][1])])
         
