@@ -1,0 +1,10 @@
+git remote add Naver_Search_Amount https://github.com/LeeKunHa/Naver_Search_Amount.git
+git remote add Anomaly_Detection_prophet https://github.com/LeeKunHa/Anomaly_Detection_prophet.git
+git remote add News_Crawler https://github.com/LeeKunHa/News_Crawler.git
+git remote add Text_Analyze https://github.com/LeeKunHa/Text_Analyze.git
+
+
+git subtree add --prefix=Naver_Search_Amount Naver_Search_Amount main
+git subtree add --prefix=Anomaly_Detection_prophet Anomaly_Detection_prophet main
+git subtree add --prefix=News_Crawler News_Crawler main
+git subtree add --prefix=Text_Analyze Text_Analyze main
