@@ -41,7 +41,7 @@ def make_edge_list(df):
 def draw_SNA(df, edges_, file_name):    
     # 최소 출연 횟수
     if len(df) <= 100:
-        min_num = 5
+        min_num = 2
     elif len(df) <= 500:
         min_num = 20
     elif len(df) <= 1000:
@@ -58,7 +58,7 @@ def draw_SNA(df, edges_, file_name):
     dgr = nx.degree_centrality(G_centrality)        # 연결 중심성
     btw = nx.betweenness_centrality(G_centrality)   # 매개 중심성
     cls = nx.closeness_centrality(G_centrality)     # 근접 중심성
-    egv = nx.eigenvector_centrality(G_centrality)   # 고유벡터 중심성
+    egv = nx.eigenvector_centrality(G_centrality, max_iter=200)   # 고유벡터 중심성
     pgr = nx.pagerank(G_centrality)                 # 페이지 랭크
 
     # 중심성이 큰 순서대로 정렬한다.
@@ -73,7 +73,7 @@ def draw_SNA(df, edges_, file_name):
     # 페이지 랭크에 따라 두 노드 사이의 연관성을 결정한다. (단어쌍의 연관성)
     # 연결 중심성으로 계산한 척도에 따라 노드의 크기가 결정된다. (단어의 등장 빈도수)
     for i in range(len(sorted_pgr)):
-        G.add_node(sorted_pgr[i][0], nodesize=sorted_dgr[i][1])
+        G.add_node(sorted_pgr[i][0], nodesize=sorted_egv[i][1])
     for ind in range((len(edges))):
         G.add_weighted_edges_from([(edges[ind][0][0], edges[ind][0][1], edges[ind][1])])
         
@@ -88,11 +88,11 @@ def draw_SNA(df, edges_, file_name):
     }
 
     plt.figure(figsize=(15,15))
-    nx.draw(G, node_size=sizes, pos=nx.spring_layout(G, k=3.5, iterations=100), **options, font_family=fontprop)  # font_family로 폰트 등록
-    ax = plt.gca()
-    ax.collections[0].set_edgecolor("#555555")
+    nx.draw(G, node_size=sizes, pos=nx.spring_layout(G, k=3.5, iterations=200), **options, font_family=fontprop)  # font_family로 폰트 등록
+    #ax = plt.gca()
+    #ax.collections[0].set_edgecolor("#555555")
     plt.savefig(f"data/visualization/SNA_{file_name}.png")
-
+    plt.close('all')
 
 
 # 동시출연빈도(클래스)
@@ -115,7 +115,7 @@ def make_corpus(df):
     word_counter = Counter((word for words in documents for word in words))
     return word_counter
 
-#워드클라우드
+#워드클라우드(빈도기반)
 def draw_word_cloud(word_counter, file_name):
     noun_list = word_counter.most_common(100)
     font_path = font_fname
@@ -131,11 +131,10 @@ def draw_word_cloud(word_counter, file_name):
     plt.axis('off')
     plt.imshow(wc.generate_from_frequencies(dict(noun_list)))
     plt.savefig(f"data/visualization/word_cloud_{file_name}.png")
+    plt.close('all')
 
-
-
-#주요키워드
-def tfidf(df):
+#주요키워드(결과값이 빈도와 거의 비슷하지만 조금 다름)
+def tfidf(df, file_name):
     corpus = []
     with open('data/result/corpus.txt', 'r', encoding='utf-8') as f:
         for doc in f:
@@ -154,4 +153,5 @@ def tfidf(df):
         '단어': tfidf.get_feature_names_out(),
         '빈도': tdm.sum(axis=0).flat
     })
+    word_count.sort_values('빈도', ascending=False).head(50).to_csv(f"data/visualization/tiidf_{file_name}.csv", index=False, encoding='cp949')
     return word_count.sort_values('빈도', ascending=False).head(50)#.reset_index().drop(['index'],axis=1)
