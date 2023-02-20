@@ -154,4 +154,4 @@ def tfidf(df, file_name):
         '빈도': tdm.sum(axis=0).flat
     })
     word_count.sort_values('빈도', ascending=False).head(50).to_csv(f"data/visualization/tiidf_{file_name}.csv", index=False, encoding='cp949')
-    return word_count.sort_values('빈도', ascending=False).head(50)#.reset_index().drop(['index'],axis=1)
+    #return word_count.sort_values('빈도', ascending=False).head(50)#.reset_index().drop(['index'],axis=1)
