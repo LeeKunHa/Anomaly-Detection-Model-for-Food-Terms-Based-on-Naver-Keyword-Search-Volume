@@ -1,4 +1,6 @@
-cd Naver_Search_Amount
+cd env_lkh/Scripts
+activate.bat
+cd../../Naver_Search_Amount
 python main.py
 cd ../Anomaly_Detection_prophet
 python main.py

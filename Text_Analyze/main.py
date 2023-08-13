@@ -18,6 +18,8 @@ _cfg = config
 def main(recent_file):        
     # 파일 읽어오기
     df = pd.read_csv(recent_file)
+    
+    if len(df) == 0: return 'pass' # 뉴스가 하나도 없는 경우 통과
 
     # 텍스트 전처리
     df['title_c'] = df.apply(clean_text, axis=1)
@@ -45,7 +47,7 @@ def main(recent_file):
     tfidf(df, file_name_)
     
     # 완료한 결과 resume_list에 추가
-    resume_list = open("resume_list.txt", 'a')
+    resume_list = open("resume_list.txt", 'a', encoding='cp949')
     resume_list.write(recent_file[27:-4]+'\n')
     resume_list.close()
 
@@ -59,7 +61,7 @@ if __name__ == "__main__":
     
     # 이미 저장된 파일 읽어오기(이어하기 옵션)
     resume_ = []
-    with open("resume_list.txt", "r") as resume_list:
+    with open("resume_list.txt", "r", encoding='cp949') as resume_list:
         for i in resume_list.readlines():
             resume_.append(i[:-1])
     files = [x for x in files if x[27:-4] not in resume_]

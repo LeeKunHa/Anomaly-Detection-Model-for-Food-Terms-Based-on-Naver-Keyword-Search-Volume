@@ -121,7 +121,7 @@ if __name__ == "__main__":
     
     # 이미 저장된 파일 읽어오기(이어하기 옵션)
     resume_ = []
-    with open("resume_list.txt", "r", encoding='utf-8') as resume_list:
+    with open("resume_list.txt", "r", encoding='cp949') as resume_list:
         for i in resume_list.readlines():
             resume_.append(i[:-1])
     files = [x for x in df_date if x[27:-4] not in resume_]
@@ -137,7 +137,7 @@ if __name__ == "__main__":
             else:
                 all_news_df, naver_news_df = main(search_, start_date, end_date,'No')
                 # 완료한 결과 resume_list에 추가
-                resume_list = open("resume_list.txt", 'a')
+                resume_list = open("resume_list.txt", 'a', encoding='cp949')
                 resume_list.write(f"{search_}_{start_date}_{end_date}\n")
                 resume_list.close()
     

@@ -42,7 +42,8 @@ def main():
     if df_anomaly_date['날짜'].iloc[-1] == yesterday:
         anomaly_yesterday = df_anomaly_date[df_anomaly_date['날짜'] == yesterday]['검색어'].values[0] #어제 이상치..
         message = f'{df_anomaly_date.날짜.iloc[-1]} 이상검색어 목록입니다. \n{anomaly_yesterday}'
-        kakao_send_text(message)
+        #kakao_send_text(message) # 하루밖에 안 되나?
+        print(message)
     else:
         message = f'{df_anomaly_date.날짜.iloc[-1]} 이후 발견된 이상 검색어가 없습니다.'
         print(message)

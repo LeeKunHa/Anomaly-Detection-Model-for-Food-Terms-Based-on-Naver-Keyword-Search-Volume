@@ -5,3 +5,6 @@ __pycache__/
 # security file
 data/
 config.py
+
+#env
+env_lkh
